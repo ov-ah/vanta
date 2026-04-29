@@ -1,6 +1,6 @@
-CC = clang
+CC = clang -Iinclude
 CFLAGS = -Wall -Wextra -std=c99 -O2
-LDFLAGS = -lGL -lglfw -lm -ldl -Iinclude
+LDFLAGS = -lGL -lglfw -lm -ldl
 
 SRC_DIR = src
 BUILD_DIR = build
