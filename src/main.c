@@ -8,14 +8,14 @@ int main(void)
 	Window window;
 	if (!window_create(&window, 1280, 720, "vanta"))
 	{
-		fprintf(stderr, "failed to create window\n");
+		fprintf(stderr, "main: failed to create window\n");
 		return EXIT_FAILURE;
 	}
 
 	/*
 	if (!renderer_init())
 	{
-	    fprintf(stderr, "failed to intialize renderer");
+	    fprintf(stderr, "main: failed to intialize renderer");
 	    window_destroy(&window);
 	    return EXIT_FAILURE;
 	}
@@ -24,14 +24,14 @@ int main(void)
 	Shader basic_frag;
 	if (!shader_load(&basic_vert, "shaders/basic.vert"))
 	{
-	    fprintf(stderr, "failed to load vertex shader");
+	    fprintf(stderr, "main: failed to load vertex shader");
 	    renderer_shutdown();
 	    window_destroy(&window);
 	    return EXIT_FAILURE;
 	}
 	if (!shader_load(&basic_frag, "shaders/basic.frag"))
 	{
-	    fprintf(stderr, "failed to load fragment shader");
+	    fprintf(stderr, "main: failed to load fragment shader");
 	    renderer_shutdown();
 	    window_destroy(&window);
 	    return EXIT_FAILURE;
