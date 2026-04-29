@@ -1,4 +1,5 @@
 -Isrc
+-Iinclude
 -std=c99
 -Wall
 -Wextra
