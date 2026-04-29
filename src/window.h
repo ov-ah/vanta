@@ -14,7 +14,7 @@ typedef struct
 	const char *title;
 } Window;
 
-bool window_destroy(Window *win, int width, int height, char *title);
+bool window_create(Window *win, int width, int height, char *title);
 bool window_should_close(const Window *win);
 void window_swap_buffer(const Window *win);
 void window_input_poll();
