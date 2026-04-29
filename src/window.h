@@ -1,8 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <stdbool.h>
 
 typedef struct GLFWwindow GLFWwindow;

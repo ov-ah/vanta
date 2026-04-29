@@ -32,16 +32,13 @@ bool window_create(Window *win, int width, int height, char *title)
 	}
 
 	glfwMakeContextCurrent(win->handle);
-
-	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK)
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		fprintf(stderr, "window: glewInit() failed\n");
+		fprintf(stderr, "window: gladLoadGLLoader() failed\n");
 		glfwDestroyWindow(win->handle);
 		glfwTerminate();
 		return false;
 	}
-
 	glfwSetFramebufferSizeCallback(win->handle, default_framebuffer_size_cb);
 	glfwSwapInterval(1);
 	return true;
