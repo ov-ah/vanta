@@ -1,5 +1,5 @@
 CC = clang -Iinclude
-CFLAGS = -Wall -Wextra -std=c99 -O2
+CFLAGS = -Wall -Wextra -std=c99 -O2 -DGLFW_INCLUDE_NONE
 LDFLAGS = -lGL -lglfw -lm -ldl
 
 SRC_DIR = src

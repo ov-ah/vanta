@@ -58,7 +58,6 @@ int main(void)
 		*/
 
 		window_swap_buffer(&window);
-		return EXIT_SUCCESS;
 	}
 
 	return EXIT_SUCCESS;
