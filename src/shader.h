@@ -6,11 +6,20 @@
 
 typedef struct
 {
-	GLuint program;
+	GLuint id;
+	GLenum type;
 } Shader;
 
-bool shader_load(Shader *shader, const char *vert_path, const char *frag_path);
-void shader_bind(const Shader *shader);
-void shader_destroy(const Shader *shader);
+typedef struct
+{
+	GLuint id;
+} ShaderProgram;
+
+bool shader_compile(Shader *shader, const char *path, GLenum type);
+void shader_destroy(Shader *shader);
+
+bool shader_program_link(ShaderProgram *program, Shader *shaders, int count);
+void shader_program_bind(const ShaderProgram *program);
+void shader_program_destroy(ShaderProgram *program);
 
 #endif

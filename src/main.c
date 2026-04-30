@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "renderer.h"
-#include "shader.h"
 #include "window.h"
 
 int main(void)
@@ -16,24 +15,7 @@ int main(void)
 
 	if (!renderer_init())
 	{
-		fprintf(stderr, "main: failed to intialize renderer");
-		window_destroy(&window);
-		return EXIT_FAILURE;
-	}
-
-	Shader basic_vert;
-	Shader basic_frag;
-	if (!shader_load(&basic_vert, "shaders/basic.vert"))
-	{
-		fprintf(stderr, "main: failed to load vertex shader");
-		renderer_shutdown();
-		window_destroy(&window);
-		return EXIT_FAILURE;
-	}
-	if (!shader_load(&basic_frag, "shaders/basic.frag"))
-	{
-		fprintf(stderr, "main: failed to load fragment shader");
-		renderer_shutdown();
+		fprintf(stderr, "main: failed to intialize renderer\n");
 		window_destroy(&window);
 		return EXIT_FAILURE;
 	}

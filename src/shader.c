@@ -1,65 +1,71 @@
 #include "shader.h"
 #include "util.h"
 
-bool shader_load(Shader *shader, char *vertPath, char *fragPath)
+#include <stdio.h>
+#include <stdlib.h>
+
+bool shader_compile(Shader *shader, const char *path, GLenum type)
 {
-	char *vertSource = read_file(vertPath);
-	if (!vertSource)
+	char *src = read_file(path);
+	if (!src)
 	{
-		fprintf(stderr, "shader: vertex shader source not found at %s\n",
-		        vertPath);
+		fprintf(stderr, "shader: could not read file %s\n", path);
 		return false;
 	}
 
-	char *fragSource = read_file(fragPath);
-	if (!fragSource)
-	{
-		fprintf(stderr, "shader: fragment shader source not found at %s\n",
-		        fragPath);
-		return false;
-	}
+	shader->id = glCreateShader(type);
+	shader->type = type;
+	glShaderSource(shader->id, 1, (const char **)&src, NULL);
+	glCompileShader(shader->id);
+	free(src);
+
 	int success;
-	char infoBuf[512];
-
-	unsigned int vertShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertShader, 1, (const char **)&vertSource, NULL);
-	glCompileShader(vertShader);
-	glGetShaderiv(vertShader, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(shader->id, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
-		glGetShaderInfoLog(vertShader, 512, NULL, infoBuf);
-		fprintf(stderr, "shader: vertex shader compile error - %s\n", infoBuf);
+		char logBuf[512];
+		glGetShaderInfoLog(shader->id, sizeof(logBuf), NULL, logBuf);
+		fprintf(stderr, "shader: could not compile shader - %s\n", logBuf);
+		shader_destroy(shader);
 		return false;
 	}
-
-	unsigned int fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragShader, 1, (const char **)&fragSource, NULL);
-	glCompileShader(fragShader);
-	glGetShaderiv(fragShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragShader, 512, NULL, infoBuf);
-		fprintf(stderr, "shader: fragment shader compile error - %s\n",
-		        infoBuf);
-		return false;
-	}
-
-	shader->program = glCreateProgram();
-	glAttachShader(shader->program, vertShader);
-	glAttachShader(shader->program, fragShader);
-	glLinkProgram(shader->program);
-	glGetProgramiv(shader->program, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shader->program, 512, NULL, infoBuf);
-		fprintf(stderr, "shader: shader program link error - %s\n", infoBuf);
-		return false;
-	}
-	free(vertSource);
-	free(fragSource);
 	return true;
 }
 
-void shader_bind(const Shader *shader) { glUseProgram(shader->program); }
+void shader_destroy(Shader *shader)
+{
+	glDeleteShader(shader->id);
+	shader->id = 0;
+}
 
-void shader_destroy(const Shader *shader) { glDeleteProgram(shader->program); }
+bool shader_program_link(ShaderProgram *program, Shader *shaders, int count)
+{
+	program->id = glCreateProgram();
+	for (int i = 0; i < count; i++)
+		glAttachShader(program->id, shaders[i].id);
+
+	glLinkProgram(program->id);
+
+	int success;
+	glGetProgramiv(program->id, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		char logBuf[512];
+		glGetProgramInfoLog(program->id, sizeof(logBuf), NULL, logBuf);
+		fprintf(stderr, "shader: could not link shader program - %s\n", logBuf);
+		shader_program_destroy(program);
+		return false;
+	}
+	return true;
+}
+
+void shader_program_bind(const ShaderProgram *program)
+{
+	glUseProgram(program->id);
+}
+
+void shader_program_destroy(ShaderProgram *program)
+{
+	glDeleteProgram(program->id);
+	program->id = 0;
+}
