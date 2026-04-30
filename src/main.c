@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "renderer.h"
+#include "shader.h"
 #include "window.h"
 
 int main(void)
@@ -12,31 +14,30 @@ int main(void)
 		return EXIT_FAILURE;
 	}
 
-	/*
 	if (!renderer_init())
 	{
-	    fprintf(stderr, "main: failed to intialize renderer");
-	    window_destroy(&window);
-	    return EXIT_FAILURE;
+		fprintf(stderr, "main: failed to intialize renderer");
+		window_destroy(&window);
+		return EXIT_FAILURE;
 	}
 
 	Shader basic_vert;
 	Shader basic_frag;
 	if (!shader_load(&basic_vert, "shaders/basic.vert"))
 	{
-	    fprintf(stderr, "main: failed to load vertex shader");
-	    renderer_shutdown();
-	    window_destroy(&window);
-	    return EXIT_FAILURE;
+		fprintf(stderr, "main: failed to load vertex shader");
+		renderer_shutdown();
+		window_destroy(&window);
+		return EXIT_FAILURE;
 	}
 	if (!shader_load(&basic_frag, "shaders/basic.frag"))
 	{
-	    fprintf(stderr, "main: failed to load fragment shader");
-	    renderer_shutdown();
-	    window_destroy(&window);
-	    return EXIT_FAILURE;
+		fprintf(stderr, "main: failed to load fragment shader");
+		renderer_shutdown();
+		window_destroy(&window);
+		return EXIT_FAILURE;
 	}
-
+	/*
 	Camera camera;
 	camera_init(&camera, 1280.0f / 720.0f);
 	*/
@@ -51,11 +52,9 @@ int main(void)
 		window_input_poll(); // why don't we need a window pointer! i love glfw!
 		// camera_update(&camera, dt);
 
-		/*
 		renderer_begin_frame();
 		renderer_draw_scene();
 		renderer_end_frame();
-		*/
 
 		window_swap_buffer(&window);
 	}
