@@ -7,7 +7,8 @@ static ShaderProgram shaderProgram;
 
 bool renderer_init(void)
 {
-	float vertices[] = {-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f};
+	float vertices[] = {-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
+	                    1.0f,  0.0f,  0.0f, 0.5f, 0.0f, 0.0f, 1.0f};
 	vertexCount = 3;
 
 	glGenVertexArrays(1, &vao);
@@ -17,9 +18,12 @@ bool renderer_init(void)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
 	                      (void *)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+	                      (void *)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	Shader vert, frag;
 	if (!shader_compile(&vert, "shaders/basic.vert", GL_VERTEX_SHADER))
