@@ -17,7 +17,7 @@ typedef struct
 bool window_create(Window *win, int width, int height, char *title);
 bool window_should_close(const Window *win);
 void window_swap_buffer(const Window *win);
-void window_input_poll();
+void window_input_poll(void);
 void window_destroy(Window *win);
 
 void window_resize_callback(Window *win, GLFWframebuffersizefun cb);

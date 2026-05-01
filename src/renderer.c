@@ -5,6 +5,13 @@ static GLuint vao, vbo;
 static GLuint vertexCount;
 static ShaderProgram shaderProgram;
 
+static void renderer_cleanup_buffers(void)
+{
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	vao = vbo = 0;
+}
+
 bool renderer_init(void)
 {
 	float vertices[] = {-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
@@ -27,10 +34,14 @@ bool renderer_init(void)
 
 	Shader vert, frag;
 	if (!shader_compile(&vert, "shaders/basic.vert", GL_VERTEX_SHADER))
+	{
+		renderer_cleanup_buffers();
 		return false;
+	}
 	if (!shader_compile(&frag, "shaders/basic.frag", GL_FRAGMENT_SHADER))
 	{
 		shader_destroy(&vert);
+		renderer_cleanup_buffers();
 		return false;
 	}
 
@@ -39,6 +50,7 @@ bool renderer_init(void)
 	{
 		shader_destroy(&vert);
 		shader_destroy(&frag);
+		renderer_cleanup_buffers();
 		return false;
 	}
 
@@ -68,7 +80,6 @@ void renderer_end_frame(void)
 
 void renderer_shutdown(void)
 {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
+	renderer_cleanup_buffers();
 	shader_program_destroy(&shaderProgram);
 }
