@@ -20,6 +20,8 @@ void shader_destroy(Shader *shader);
 
 bool shader_program_link(ShaderProgram *program, Shader *shaders, int count);
 void shader_program_bind(const ShaderProgram *program);
+void shader_program_set_float(const ShaderProgram *program, const char *name,
+                              float value);
 void shader_program_destroy(ShaderProgram *program);
 
 #endif

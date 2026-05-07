@@ -64,6 +64,13 @@ void shader_program_bind(const ShaderProgram *program)
 	glUseProgram(program->id);
 }
 
+void shader_program_set_float(const ShaderProgram *program, const char *name,
+                              float value)
+{
+	GLint loc = glGetUniformLocation(program->id, name);
+	glUniform1f(loc, value);
+}
+
 void shader_program_destroy(ShaderProgram *program)
 {
 	glDeleteProgram(program->id);

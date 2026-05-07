@@ -30,12 +30,12 @@ int main(void)
 		// double now = window_get_time();
 		// float dt = (float)(now - last_time);
 		// last_time = now
-
+		float time = (float)glfwGetTime();
 		window_input_poll(); // why don't we need a window pointer! i love glfw!
 		// camera_update(&camera, dt);
 
 		renderer_begin_frame();
-		renderer_draw_scene();
+		renderer_draw_scene(time);
 		renderer_end_frame();
 
 		window_swap_buffer(&window);

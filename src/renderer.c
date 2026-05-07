@@ -65,9 +65,10 @@ void renderer_begin_frame(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void renderer_draw_scene(void)
+void renderer_draw_scene(float time)
 {
 	shader_program_bind(&shaderProgram);
+	shader_program_set_float(&shaderProgram, "uTime", time);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 	glBindVertexArray(0);
