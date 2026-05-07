@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "shader.h"
 
-static GLuint vao, vbo;
+static GLuint vao, vbo, ebo;
 static GLuint vertexCount;
 static ShaderProgram shaderProgram;
 
@@ -14,17 +14,31 @@ static void renderer_cleanup_buffers(void)
 
 bool renderer_init(void)
 {
+	// https://open.gl/drawing
 	float vertices[] = {
-	    0.0f, 0.5f,  1.0f, 0.0f, 0.0f, // posX, posY, r, g, b (can also add a)
-	    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f};
+	    -0.5f, 0.5f,  1.0f, 0.0f, 0.0f, // Top-left
+	    0.5f,  0.5f,  0.0f, 1.0f, 0.0f, // Top-right
+	    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+	    -0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+	};
+
+	GLuint elements[] = {
+	    0, 1, 2, // 1
+	    2, 3, 0  // 2
+	};
+
 	vertexCount = 3;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements,
+	             GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
 	                      (void *)0);
@@ -70,7 +84,7 @@ void renderer_draw_scene(void)
 {
 	shader_program_bind(&shaderProgram);
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
