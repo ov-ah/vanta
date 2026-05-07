@@ -35,7 +35,7 @@ int main(void)
 		// camera_update(&camera, dt);
 
 		renderer_begin_frame();
-		renderer_draw_scene(time);
+		renderer_draw_scene();
 		renderer_end_frame();
 
 		window_swap_buffer(&window);

@@ -14,8 +14,9 @@ static void renderer_cleanup_buffers(void)
 
 bool renderer_init(void)
 {
-	float vertices[] = {-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
-	                    1.0f,  0.0f,  0.0f, 0.5f, 0.0f, 0.0f, 1.0f};
+	float vertices[] = {
+	    0.0f, 0.5f,  1.0f, 0.0f, 0.0f, // posX, posY, r, g, b (can also add a)
+	    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f};
 	vertexCount = 3;
 
 	glGenVertexArrays(1, &vao);
@@ -65,10 +66,9 @@ void renderer_begin_frame(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void renderer_draw_scene(float time)
+void renderer_draw_scene(void)
 {
 	shader_program_bind(&shaderProgram);
-	shader_program_set_float(&shaderProgram, "uTime", time);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 	glBindVertexArray(0);
